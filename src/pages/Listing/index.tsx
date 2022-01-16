@@ -8,6 +8,7 @@ import { BASE_URL } from "utils/requests";
 function Listing() {
 
     const [pageNumber, setPageNumber] = useState(0);
+
     const [page, setPage] = useState<MoviePage>({
         content: [],
         last: true,
@@ -18,7 +19,7 @@ function Listing() {
         first: true,
         numberOfElements: 0,
         empty: true,
-    })
+    });
 
     useEffect(() => {
         axios.get(`${BASE_URL}/movies?size=12&page=${pageNumber}&sort=id`)
@@ -26,20 +27,16 @@ function Listing() {
                 const data = response.data as MoviePage;
                 setPage(data)
             });
-    }, [pageNumber])
+    }, [pageNumber]);
 
-    const movie = {
-        id: 1,
-        image: "https://www.themoviedb.org/t/p/w533_and_h300_bestv2/jBJWaqoSCiARWtfV0GlqHrcdidd.jpg",
-        title: "The Witcher",
-        count: 2,
-        score: 4.5
+    const handlePageChange = (pageNumber: number) => {
+        setPageNumber(pageNumber);
     };
-
 
     return (
         <>
-            <Pagination />
+            <Pagination page={page} onChange={handlePageChange} />
+
             <div className="container">
                 <div className="row">
                     {page.content.map(movie => (
